@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>display_threads.h</itemPath>
       <itemPath>fsm.h</itemPath>
       <itemPath>main.h</itemPath>
     </logicalFolder>
@@ -14,6 +15,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>display_threads.c</itemPath>
       <itemPath>main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -55,6 +57,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="display_threads.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="display_threads.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="fsm.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
@@ -82,6 +88,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="display_threads.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="display_threads.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="fsm.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">

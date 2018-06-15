@@ -4,14 +4,15 @@
   @author   +Nombre del autor (ej: Salvador Allende)+
  ******************************************************************************/
 
-#ifndef _FSM_H_
-#define _FSM_H_
+#ifndef _DIS_THREADS_
+#define _DIS_THREADS_
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-#include <allegro5/allegro.h>
-#include <allegro5/events.h>
+#include "fsm.h"
+#include <stdio.h>
+#include <pthread.h>
 
 
 
@@ -24,12 +25,7 @@
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-typedef struct STATE
-{
-    ALLEGRO_EVENT event;
-    struct STATE *nextState;
-    void (*actionRoutine)(void *);
-} state_t;
+
 
 
 /*******************************************************************************
@@ -55,4 +51,4 @@ typedef struct STATE
 /*******************************************************************************
  ******************************************************************************/
 
-#endif // _FSM_H_
+#endif // _DIS_THREADS_
