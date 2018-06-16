@@ -13,7 +13,7 @@
 #include "fsm.h"
 #include <stdio.h>
 #include <pthread.h>
-
+#include <allegro5/events.h>
 
 
 /*******************************************************************************
@@ -21,7 +21,13 @@
  ******************************************************************************/
 #define END_TABLE 0
 #define KEYDOWN_ASCII 40
+#define KEYUP_ASCII 38
+#define KEYLEFT_ASCII 37
+#define KEYRIGHT_ASCII 39
 #define ENTER_ASCII 13
+#define ALLEGRO_EVENT_USER 1023
+#define LEVEL_UP 1
+#define GAME_OVER 1
 
 
 /*******************************************************************************

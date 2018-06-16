@@ -2,13 +2,38 @@
 
 int main(int argc, char** argv) 
 {
-    ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+    ALLEGRO_EVENT_QUEUE *eventQueue = al_create_event_queue();
+    if(eventQueue)
+    {
+        fprintf(stderr, "Error loading event queue.");
+        return -1;
+    }
     ALLEGRO_EVENT event;
+    
     ALLEGRO_EVENT_SOURCE lives;
     al_init_user_event_source(&lives); //Creación de un tipo de evento de software para cuando se acaban las vidas.
+    al_register_event_source(eventQueue, &lives);
+    
     ALLEGRO_EVENT_SOURCE levelUp;
     al_init_user_event_source(&levelUp); //Creación de un tipo de evento de software para cuando se llega al otro lado del cruce y se sube de nivel.
+    al_register_event_source(eventQueue, &levelUp);
     
+    ALLEGRO_TIMER *carsTimer = al_create_timer(1.0 / FPS); // Timer para actualizar la posición de los autos.
+    if(carsTimer)
+    {
+        fprintf(stderr, "Error loading carsTimer.");
+        al_destroy_event_queue(eventQueue);
+        return -1;
+    }
+    al_register_event_source(eventQueue, al_get_timer_event_source(carsTimer));
+    
+    if(al_install_keyboard()) // USO EL TECLADO EN LUGAR DEL JOYSTICK, ESTO DEBE CAMBIARSE.
+    {
+        fprintf(stderr, "Error installing keyboard.");
+        al_destroy_event_queue(eventQueue);
+        al_destroy_timer(carsTimer);
+        return -1;
+    }
 
 /************************** CREACIÓN DE TABLAS DE ESTADOS ****************************/
     state_t startMenuPlayGame[2+1]; //Cada arreglo de estado tiene tantos elementos state_t como posibles eventos que espera recibir +1 (END_TABLE).
@@ -20,16 +45,167 @@ int main(int argc, char** argv)
     state_t pauseMenuBackToStart[2+1];
     state_t saveScore1Char[3+1];
     state_t saveScore2Char[3+1];
-    state_t saceScore3Char[3+1];
+    state_t saveScore3Char[3+1];
     
-    startMenuPlayGame[0].event.keyboard.unichar = KEYDOWN_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ABAJO DEL JOYSTICK.
-    startMenuPlayGame[0].nextState = startMenuViewScoreBoard;
-    startMenuPlayGame[1].event.keyboard.unichar = ENTER_ASCII; // CAMBIAR ESTO A UN EVENTO PRESS JOYSTICK.
-    startMenuPlayGame[1].nextState = game;
-    startMenuPlayGame[2].event.user.data1 = END_TABLE;
-    startMenuPlayGame[2].nextState = startMenuPlayGame;
-    
+    /*********** INICIALIZACIÓN DE TABLAS DE ESTADOS ***********/
+    {
+        startMenuPlayGame[0].event.keyboard.unichar = KEYDOWN_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ABAJO DEL JOYSTICK.
+        startMenuPlayGame[0].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        startMenuPlayGame[0].nextState = startMenuViewScoreBoard;
+        startMenuPlayGame[0].actionRoutine;
+        startMenuPlayGame[1].event.keyboard.unichar = ENTER_ASCII; // CAMBIAR ESTO A UN EVENTO PRESS JOYSTICK.
+        startMenuPlayGame[1].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        startMenuPlayGame[1].nextState = game;
+        startMenuPlayGame[1].actionRoutine;
+        startMenuPlayGame[2].event.user.data1 = END_TABLE;
+        startMenuPlayGame[2].event.type = ALLEGRO_EVENT_USER;
+        startMenuPlayGame[2].nextState = startMenuPlayGame;
+        startMenuPlayGame[2].actionRoutine;
+
+        startMenuViewScoreBoard[0].event.keyboard.unichar = KEYUP_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ARRIBA DEL JOYSTICK.
+        startMenuViewScoreBoard[0].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        startMenuViewScoreBoard[0].nextState = startMenuPlayGame;
+        startMenuViewScoreBoard[0].actionRoutine;
+        startMenuViewScoreBoard[1].event.keyboard.unichar = KEYDOWN_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ABAJO DEL JOYSTICK.
+        startMenuViewScoreBoard[1].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        startMenuViewScoreBoard[1].nextState = startMenuQuit;
+        startMenuViewScoreBoard[1].actionRoutine;
+        startMenuViewScoreBoard[2].event.keyboard.unichar = ENTER_ASCII; // CAMBIAR ESTO A UN EVENTO PRESS JOYSTICK.
+        startMenuViewScoreBoard[2].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        startMenuViewScoreBoard[2].nextState = scoreBoard;
+        startMenuViewScoreBoard[2].actionRoutine;
+        startMenuViewScoreBoard[3].event.user.data1 = END_TABLE;
+        startMenuViewScoreBoard[3].event.type = ALLEGRO_EVENT_USER;
+        startMenuViewScoreBoard[3].nextState = startMenuViewScoreBoard;
+        startMenuViewScoreBoard[3].actionRoutine;
+
+        startMenuQuit[0].event.keyboard.unichar = KEYUP_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ARRIBA DEL JOYSTICK.
+        startMenuQuit[0].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        startMenuQuit[0].nextState = startMenuViewScoreBoard;
+        startMenuQuit[0].actionRoutine;
+        startMenuQuit[1].event.keyboard.unichar = ENTER_ASCII; // CAMBIAR ESTO A UN EVENTO PRESS JOYSTICK.
+        startMenuQuit[1].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        startMenuQuit[1].nextState = NULL;
+        startMenuQuit[1].actionRoutine;
+        startMenuQuit[2].event.user.data1 = END_TABLE;
+        startMenuQuit[2].event.type = ALLEGRO_EVENT_USER;
+        startMenuQuit[2].nextState = startMenuQuit;
+        startMenuQuit[2].actionRoutine;
+
+        scoreBoard[0].event.keyboard.unichar = ENTER_ASCII;
+        scoreBoard[0].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        scoreBoard[0].nextState = startMenuPlayGame;
+        scoreBoard[0].actionRoutine;
+        scoreBoard[1].event.user.data1 = END_TABLE;
+        scoreBoard[1].event.type = ALLEGRO_EVENT_USER;
+        scoreBoard[1].nextState = scoreBoard;
+        scoreBoard[1].actionRoutine;
+
+
+        game[0].event.keyboard.unichar = KEYUP_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ARRIBA DEL JOYSTICK.
+        game[0].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        game[0].nextState = game;
+        game[0].actionRoutine;
+        game[1].event.keyboard.unichar = KEYDOWN_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ABAJO DEL JOYSTICK.
+        game[1].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        game[1].nextState = game;
+        game[1].actionRoutine;
+        game[2].event.keyboard.unichar = KEYRIGHT_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA DERECHA DEL JOYSTICK.
+        game[2].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        game[2].nextState = game;
+        game[2].actionRoutine;
+        game[3].event.keyboard.unichar = KEYLEFT_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA IZQUIERDA DEL JOYSTICK.
+        game[3].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        game[3].nextState = game;
+        game[3].actionRoutine;
+        game[4].event.keyboard.unichar = ENTER_ASCII; // CAMBIAR ESTO A UN EVENTO PRESS JOYSTICK.
+        game[4].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        game[4].nextState = pauseMenuContinue;
+        game[4].actionRoutine;
+        game[5].event.timer.source = carsTimer;
+        game[5].event.type = ALLEGRO_EVENT_TIMER;
+        game[5].nextState = game;
+        game[5].actionRoutine;
+        game[6].event.user.data1 = LEVEL_UP;
+        game[6].event.type = ALLEGRO_EVENT_USER;
+        game[6].nextState = game;
+        game[6].actionRoutine;
+        game[7].event.user.data1 = GAME_OVER;
+        game[7].event.type = ALLEGRO_EVENT_USER;
+        game[7].nextState = saveScore1Char;
+        game[7].actionRoutine;
+        game[8].event.user.data1 = END_TABLE;
+        game[8].event.type = ALLEGRO_EVENT_USER;
+        game[8].nextState = game;
+        game[8].actionRoutine;
+
+        pauseMenuContinue[0].event.keyboard.unichar = KEYDOWN_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ABAJO DEL JOYSTICK.
+        pauseMenuContinue[0].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        pauseMenuContinue[0].nextState = pauseMenuBackToStart;
+        pauseMenuContinue[0].actionRoutine;
+        pauseMenuContinue[1].event.keyboard.unichar = ENTER_ASCII; // CAMBIAR ESTO A UN EVENTO PRESS JOYSTICK.
+        pauseMenuContinue[1].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        pauseMenuContinue[1].nextState = game;
+        pauseMenuContinue[1].actionRoutine;
+        pauseMenuContinue[2].event.user.data1 = END_TABLE;
+        pauseMenuContinue[2].event.type = ALLEGRO_EVENT_USER;
+        pauseMenuContinue[2].nextState = pauseMenuContinue;
+        pauseMenuContinue[2].actionRoutine;
+
+        saveScore1Char[0].event.keyboard.unichar = KEYUP_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ARRIBA DEL JOYSTICK.
+        saveScore1Char[0].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        saveScore1Char[0].nextState = saveScore1Char;
+        saveScore1Char[0].actionRoutine;
+        saveScore1Char[1].event.keyboard.unichar = KEYDOWN_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ABAJO DEL JOYSTICK.
+        saveScore1Char[1].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        saveScore1Char[1].nextState = saveScore1Char;
+        saveScore1Char[1].actionRoutine;
+        saveScore1Char[2].event.keyboard.unichar = ENTER_ASCII; // CAMBIAR ESTO A UN EVENTO PRESS JOYSTICK.
+        saveScore1Char[2].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        saveScore1Char[2].nextState = saveScore2Char;
+        saveScore1Char[2].actionRoutine;
+        saveScore1Char[3].event.user.data1 = END_TABLE;
+        saveScore1Char[3].event.type = ALLEGRO_EVENT_USER;
+        saveScore1Char[3].nextState = saveScore1Char;
+        saveScore1Char[3].actionRoutine;
+
+        saveScore2Char[0].event.keyboard.unichar = KEYUP_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ARRIBA DEL JOYSTICK.
+        saveScore2Char[0].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        saveScore2Char[0].nextState = saveScore2Char;
+        saveScore2Char[0].actionRoutine;
+        saveScore2Char[1].event.keyboard.unichar = KEYDOWN_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ABAJO DEL JOYSTICK.
+        saveScore2Char[1].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        saveScore2Char[1].nextState = saveScore2Char;
+        saveScore2Char[1].actionRoutine;
+        saveScore2Char[2].event.keyboard.unichar = ENTER_ASCII; // CAMBIAR ESTO A UN EVENTO PRESS JOYSTICK.
+        saveScore2Char[2].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        saveScore2Char[2].nextState = saveScore3Char;
+        saveScore2Char[2].actionRoutine;
+        saveScore2Char[3].event.user.data1 = END_TABLE;
+        saveScore2Char[3].event.type = ALLEGRO_EVENT_USER;
+        saveScore2Char[3].nextState = saveScore2Char;
+        saveScore2Char[3].actionRoutine;
+
+        saveScore3Char[0].event.keyboard.unichar = KEYUP_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ARRIBA DEL JOYSTICK.
+        saveScore3Char[0].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        saveScore3Char[0].nextState = saveScore3Char;
+        saveScore3Char[0].actionRoutine;
+        saveScore3Char[1].event.keyboard.unichar = KEYDOWN_ASCII; // CAMBIAR ESTO A UN EVENTO PALANCA ABAJO DEL JOYSTICK.
+        saveScore3Char[1].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        saveScore3Char[1].nextState = saveScore3Char;
+        saveScore3Char[1].actionRoutine;
+        saveScore3Char[2].event.keyboard.unichar = ENTER_ASCII; // CAMBIAR ESTO A UN EVENTO PRESS JOYSTICK.
+        saveScore3Char[2].event.type = ALLEGRO_EVENT_KEY_CHAR; // CAMBIAR ESTO POR TIPO DE EVENTO ALLEGRO_EVENT_USER (O EL QUE CORRESPONDA).
+        saveScore3Char[2].nextState = startMenuPlayGame;
+        saveScore3Char[2].actionRoutine;
+        saveScore3Char[3].event.user.data1 = END_TABLE;
+        saveScore3Char[3].event.type = ALLEGRO_EVENT_USER;
+        saveScore3Char[3].nextState = saveScore3Char;
+        saveScore3Char[3].actionRoutine;
+    }
 /************************************************************************************/
+    
+    
     
     return (EXIT_SUCCESS);
 }
