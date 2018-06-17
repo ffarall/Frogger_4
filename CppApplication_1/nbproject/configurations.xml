@@ -15,6 +15,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>action_routines.c</itemPath>
       <itemPath>display_threads.c</itemPath>
       <itemPath>main.c</itemPath>
     </logicalFolder>
@@ -57,6 +58,8 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="action_routines.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="display_threads.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="display_threads.h" ex="false" tool="3" flavor2="0">
@@ -88,6 +91,8 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="action_routines.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="display_threads.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="display_threads.h" ex="false" tool="3" flavor2="0">

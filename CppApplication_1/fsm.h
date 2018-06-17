@@ -10,6 +10,7 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
+#include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/events.h>
 
@@ -30,6 +31,19 @@ typedef struct STATE
     struct STATE *nextState;
     void (*actionRoutine)(void *);
 } state_t;
+typedef struct
+{
+    ALLEGRO_EVENT_SOURCE lives;
+    ALLEGRO_EVENT_SOURCE levelUp;
+    ALLEGRO_EVENT_SOURCE frogHit;
+    boolean_t quitGame;
+    boolean_t (*pBoard)[16][16];
+    int frog[2];
+    char player[3];
+    uint score;
+    scorer_t (*pTop10)[10];
+}gameData_t;
+
 
 
 /*******************************************************************************
@@ -42,6 +56,7 @@ typedef struct STATE
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
+void nonActRoutine(void *);
 
 /**
  * @brief TODO: completar descripcion

@@ -43,18 +43,6 @@ typedef struct
     uint score;
 } scorer_t;
 typedef char boolean_t;
-typedef struct
-{
-    ALLEGRO_EVENT_SOURCE lives;
-    ALLEGRO_EVENT_SOURCE levelUp;
-    ALLEGRO_EVENT_SOURCE frogHit;
-    boolean_t quitGame;
-    boolean_t (*pBoard)[16][16];
-    int frog[2];
-    char player[3];
-    uint score;
-    scorer_t (*pTop10)[10];
-}gameData_t;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
