@@ -282,6 +282,8 @@ int main(int argc, char* argv[])
 /************************************************************************************/
     pGameData.currentState = startMenuPlayGame;
     al_start_timer(carsTimer);
+    pthread_t terminalDisplay;
+    pthread_create(&terminalDisplay, NULL, &terminal_display, NULL);
     
     while(!gameData.quitGame)
     {
@@ -309,7 +311,7 @@ int main(int argc, char* argv[])
     }
     
     printf("YOU EXITED THE GAME\n"); // CAMBIAR ESTO A UN MENSAJE DE SALIDA DEL JUEGO O LO QUE SEA.
-    
+    pthread_join(terminalDisplay, NULL);
     
     return (EXIT_SUCCESS);
 }
