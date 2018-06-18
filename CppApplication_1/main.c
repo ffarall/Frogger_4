@@ -9,7 +9,6 @@ int main(int argc, char** argv)
         return -1;
     }
     ALLEGRO_EVENT event;
-    state_t *currentState;
     
     ALLEGRO_TIMER *carsTimer = al_create_timer(1.0/FPS); // Timer para actualizar la posición de los autos.
     if(carsTimer)
@@ -281,7 +280,7 @@ int main(int argc, char** argv)
         saveScore3Char[3].stateID = 9;
     }
 /************************************************************************************/
-    currentState = startMenuPlayGame;
+    pGameData.currentState = startMenuPlayGame;
     al_start_timer(carsTimer);
     
     while(!gameData.quitGame)
@@ -293,7 +292,7 @@ int main(int argc, char** argv)
         }
         else if(gameData.pBoard[gameData.frog[1]][gameData.frog[0]]) // Si en la posición de la rana hay un 1, hay un choque.
         { 
-            event.type = ALLEGRO_EVENT_USER;
+            event.type = ALLEGRO_EVENT_USER;    
             al_emit_user_event(gameData.frogHit, &event, NULL); // ES POSIBLE QUE ESTE EVENTO NO ESTE SIENDO ENVIADO A LA COLA, SINO DIRECTAMENTE A LA VARIABLE event, CONTROLAR ESO.
         }
         else if(gameData.frog[1] == 0 && (gameData.frog[0] == 2 || gameData.frog[0] == 6 || gameData.frog[0] == 9 || gameData.frog[0] = 13)) // Si la rana llegó a alguno de los 4 lugares de llegada, se sube de nivel.
@@ -305,7 +304,7 @@ int main(int argc, char** argv)
         
         if(al_get_next_event(eventQueue, &event))
         {
-            currentState = fsm_handler(currentState, event, pGameData);
+            pGameData.currentState = fsm_handler(pGameData.currentState, event, pGameData);
         }
     }
     

@@ -11,6 +11,7 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 #include "fsm.h"
+#include "display_threads.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <pthread.h>
