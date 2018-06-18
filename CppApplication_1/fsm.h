@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/events.h>
+#include <time.h>
+#include <stdlib.h>
 
 
 
@@ -20,6 +22,7 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 #define BOARD_SIZE 16
+#define LIVES 3
 
 
 /*******************************************************************************
@@ -56,10 +59,28 @@ typedef char boolean_t;
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-void nonActRoutine(void *);
-void carsRoutine(void *);
-void shift_rigt_row(boolean_t row[16]);
+void non_act_routine(void *pArg);
+void cars_routine(void *pArg);
+void shift_right_row(boolean_t row[16]);
 void shift_left_row(boolean_t row[16]);
+void shift_handler(boolean_t row[BOARD_SIZE], boolean_t way);
+void frog_up(void *pArg);
+void frog_down(void *pArg);
+void frog_left(void *pArg);
+void frog_right(void *pArg);
+void frog_hit(void *pArg);
+void start_game(void *pArg);
+void letter_up(void *pArg, int letter);
+void letter_down(void *pArg, int letter);
+void fst_letter_up(void *pArg);
+void scd_letter_up(void *pArg);
+void trd_letter_up(void *pArg);
+void fst_letter_down(void *pArg);
+void scd_letter_down(void *pArg);
+void trd_letter_down(void *pArg);
+void end_game(void *pArg);
+void game_over(void *pArg);
+
 
 /**
  * @brief TODO: completar descripcion

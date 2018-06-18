@@ -30,7 +30,7 @@
 #define LEVEL_UP 1
 #define GAME_OVER 1
 #define FROG_HIT 1
-#define FPS 60.0
+#define FPS 20.0
 
 
 /*******************************************************************************
