@@ -19,7 +19,7 @@
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
-
+#define BOARD_SIZE 16
 
 
 /*******************************************************************************
@@ -43,7 +43,7 @@ typedef struct
     uint score;
     scorer_t (*pTop10)[10];
 }gameData_t;
-
+typedef char boolean_t;
 
 
 /*******************************************************************************
@@ -57,6 +57,9 @@ typedef struct
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 void nonActRoutine(void *);
+void carsRoutine(void *);
+void shift_rigt_row(boolean_t row[16]);
+void shift_left_row(boolean_t row[16]);
 
 /**
  * @brief TODO: completar descripcion

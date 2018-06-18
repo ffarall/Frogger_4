@@ -28,7 +28,7 @@ int main(int argc, char** argv)
         return -1;
     }
     
-    boolean_t board[16][16];
+    boolean_t board[BOARD_SIZE][BOARD_SIZE];
     init_board(board);
     scorer_t top10[10]; // Arreglo de top 10 de puntajes. 
     // ESTE ARREGLO DEBE SER LLENADO AL INICIO DEL PROGRAMA CON EL TOP10 GUARDADO EN UN ARCHIVO Y VACIADO EN ESE MISMO ARCHIVO AL FINALIZAR.

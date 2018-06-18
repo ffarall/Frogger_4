@@ -31,7 +31,6 @@
 #define GAME_OVER 1
 #define FROG_HIT 1
 #define FPS 60.0
-#define BOARD_SIZE 16
 
 
 /*******************************************************************************
@@ -42,7 +41,6 @@ typedef struct
     char player[3];
     uint score;
 } scorer_t;
-typedef char boolean_t;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
