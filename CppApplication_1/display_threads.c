@@ -1,6 +1,6 @@
 #include "display_threads.h"
 
-void terminal_display(void *pArg)
+void* terminal_display(void *pArg)
 {
     gameData_t *pData = pArg;
     int i,j;
@@ -94,4 +94,5 @@ void terminal_display(void *pArg)
             }break;
         }
     }
+    return NULL;
 }

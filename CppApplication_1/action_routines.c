@@ -9,30 +9,14 @@ void cars_routine(void *pArg)
 {
     gameData_t *pData = pArg;
     static int dividersMax[BOARD_SIZE] = {0, 15, 20, 8, 15, 20, 8, 15, 0, 12, 7, 12, 10, 7, 10, 0}; // Cuando se suba de nivel, alguno de estos máximos se decrementará para hacer que el ciclo de avance de el carril correspondiente sea más rápido.
-    static int dividers[BOARD_SIZE] = {
-        dividersMax[0], 
-        dividersMax[1],
-        dividersMax[2],
-        dividersMax[3],
-        dividersMax[4],
-        dividersMax[5],
-        dividersMax[6],
-        dividersMax[7],
-        dividersMax[8],
-        dividersMax[9],
-        dividersMax[10],
-        dividersMax[11],
-        dividersMax[12],
-        dividersMax[13],
-        dividersMax[14],
-        dividersMax[15] }; // Ante un evento de timer, se decrementa el divider de cada carril, logrando así que cada carril tenga su ciclo de timer, cuando el divider llega a 0.
+    static int dividers[BOARD_SIZE] = {0, 15, 20, 8, 15, 20, 8, 15, 0, 12, 7, 12, 10, 7, 10, 0}; // Ante un evento de timer, se decrementa el divider de cada carril, logrando así que cada carril tenga su ciclo de timer, cuando el divider llega a 0.
     boolean_t ways[BOARD_SIZE] = {0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0};
     int row = 0;
     srand(time(NULL));
     
     if(pData->levelUp.__pad[0]) // Si se tiene que subir de nivel, se efectua un cambio en el máximo de los divisores.
     {
-        pData->levelUp.__pad = !(pData->levelUp.__pad[0]); // Se evita que se suba de nivel nuevamente.
+        pData->levelUp.__pad[0] = !(pData->levelUp.__pad[0]); // Se evita que se suba de nivel nuevamente.
         while((dividersMax[row] <= 1)) 
         {
             row = rand()%16; // Se selecciona al azar uno de los carriles a aumetar su velocidad. No se aumenta la volocidad de los que ya van a la velocidad del clock.
@@ -51,7 +35,7 @@ void cars_routine(void *pArg)
                 dividers[row]--;
                 if(!dividers[row]) // Si se cumplió el ciclo, se mueven los autos.
                 {
-                    shift_handler(pData->pBoard[row], ways[row]);
+                    shift_handler(*(pData->pBoard)[row], ways[row]);
                     dividers[row] = dividersMax[row]; // Se resetea el ciclo con el maximo de cada divider.
                 }
             }

@@ -28,6 +28,12 @@
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+typedef char boolean_t;
+typedef struct
+{
+    char player[3];
+    uint score;
+} scorer_t;
 typedef struct STATE
 {
     ALLEGRO_EVENT event;
@@ -48,7 +54,6 @@ typedef struct
     scorer_t (*pTop10)[10];
     state_t *currentState;
 }gameData_t;
-typedef char boolean_t;
 
 
 /*******************************************************************************

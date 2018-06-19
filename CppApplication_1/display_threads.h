@@ -39,6 +39,7 @@
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
+void* terminal_display(void *pArg);
 
 /**
  * @brief TODO: completar descripcion
