@@ -50,7 +50,7 @@ void* terminal_display(void *pArg)
                 {
                     for(j = 0; j < BOARD_SIZE; j++)
                     {
-                        if(i == pData->frog[0] && j == pData->frog[1])
+                        if(i == pData->frog.x && j == pData->frog.y)
                         {
                             printf("F");
                         }

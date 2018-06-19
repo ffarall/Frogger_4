@@ -41,6 +41,13 @@ typedef struct STATE
     void (*actionRoutine)(void *);
     int stateID;
 } state_t;
+
+typedef struct
+{
+    int8_t x;
+    int8_t y;
+}frog_t;
+
 typedef struct
 {
     ALLEGRO_EVENT_SOURCE lives;
@@ -48,7 +55,7 @@ typedef struct
     ALLEGRO_EVENT_SOURCE frogHit;
     boolean_t quitGame;
     boolean_t (*pBoard)[16][16];
-    int frog[2];
+    frog_t frog;
     char player[3];
     uint score;
     scorer_t (*pTop10)[10];

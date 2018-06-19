@@ -57,8 +57,8 @@ int main(int argc, char* argv[])
         gameData.pTop10 = &top10;
         
         gameData.quitGame = 0;
-        gameData.frog[0] = 7;
-        gameData.frog[1] = 15;// coordenadas x e y de la rana.
+        gameData.frog.x = 7;
+        gameData.frog.y = 15;// coordenadas x e y de la rana.
     }
 
 /************************** CREACIÓN DE TABLAS DE ESTADOS ****************************/
@@ -299,12 +299,12 @@ int main(int argc, char* argv[])
             event.type = ALLEGRO_EVENT_USER;
             al_emit_user_event(&gameData.lives, &event, NULL); // ES POSIBLE QUE ESTE EVENTO NO ESTE SIENDO ENVIADO A LA COLA, SINO DIRECTAMENTE A LA VARIABLE event, CONTROLAR ESO.
         }
-        else if(gameData.pBoard[gameData.frog[1]][gameData.frog[0]]) // Si en la posición de la rana hay un 1, hay un choque.
+        else if(gameData.pBoard[gameData.frog.y][gameData.frog.x]) // Si en la posición de la rana hay un 1, hay un choque.
         { 
             event.type = ALLEGRO_EVENT_USER;    
             al_emit_user_event(&gameData.frogHit, &event, NULL); // ES POSIBLE QUE ESTE EVENTO NO ESTE SIENDO ENVIADO A LA COLA, SINO DIRECTAMENTE A LA VARIABLE event, CONTROLAR ESO.
         }
-        else if(gameData.frog[1] == 0 && (gameData.frog[0] == 2 || gameData.frog[0] == 6 || gameData.frog[0] == 9 || gameData.frog[0] == 13)) // Si la rana llegó a alguno de los 4 lugares de llegada, se sube de nivel.
+        else if(gameData.frog.y == 0 && (gameData.frog.x == 2 || gameData.frog.x == 6 || gameData.frog.x == 9 || gameData.frog.x == 13)) // Si la rana llegó a alguno de los 4 lugares de llegada, se sube de nivel.
         {
             event.type = ALLEGRO_EVENT_USER;
             gameData.levelUp.__pad[0] = 1; // Se avisa que se va a subir de nivel.

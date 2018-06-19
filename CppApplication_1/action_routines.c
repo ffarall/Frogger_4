@@ -23,8 +23,8 @@ void cars_routine(void *pArg)
         }
         dividersMax[row]--;
         
-        pData->frog[0] = 8;
-        pData->frog[1] = 15; // Se reinicia la posición de la rana.
+        pData->frog.x = 8;
+        pData->frog.y = 15; // Se reinicia la posición de la rana.
     }
     else // En cambio, si la rutina fue llamada por evento de timer, se realiza el decremento de los dividers.
     {
@@ -46,36 +46,36 @@ void cars_routine(void *pArg)
 void frog_up(void *pArg)
 {
     gameData_t *pData = pArg;
-    if(pData->frog[1]) // Si no se está en y=0, se sube.
+    if(pData->frog.y) // Si no se está en y=0, se sube.
     {
-        (pData->frog[1])--;
+        (pData->frog.y)--;
     }
 }
 
 void frog_down(void *pArg)
 {
     gameData_t *pData = pArg;
-    if(pData->frog[1] < 15) // Si no se está en y=15, se baja.
+    if(pData->frog.y < 15) // Si no se está en y=15, se baja.
     {
-        (pData->frog[1])++;
+        (pData->frog.y)++;
     }
 }
 
 void frog_left(void *pArg)
 {
     gameData_t *pData = pArg;
-    if(pData->frog[0]) // Si no se está en x=0, se va a la izquierda.
+    if(pData->frog.x) // Si no se está en x=0, se va a la izquierda.
     {
-        (pData->frog[0])--;
+        (pData->frog.x)--;
     }
 }
 
 void frog_right(void *pArg)
 {
     gameData_t *pData = pArg;
-    if(pData->frog[0] < 15) // Si no se está en x=15, se va a la derecha.
+    if(pData->frog.x < 15) // Si no se está en x=15, se va a la derecha.
     {
-        (pData->frog[0])++;
+        (pData->frog.x)++;
     }
 }
 
@@ -83,8 +83,8 @@ void frog_hit(void *pArg)
 {
     gameData_t *pData = pArg;
     pData->lives.__pad[0]--;
-    pData->frog[0] = 8;
-    pData->frog[1] = 15; // Se reinicia la posición de la rana.
+    pData->frog.x = 8;
+    pData->frog.y = 15; // Se reinicia la posición de la rana.
 }
 
 void start_game(void *pArg)
