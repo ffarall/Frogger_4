@@ -3,8 +3,13 @@
 int main(int argc, char* argv[]) 
 {
     ALLEGRO_EVENT_QUEUE *eventQueue = NULL;
+    if(!al_init()) 
+    {
+       fprintf(stderr, "failed to initialize allegro!\n");
+       return -1;
+    }
     eventQueue = al_create_event_queue();
-    if(eventQueue)
+    if(!eventQueue)
     {
         fprintf(stderr, "Error loading event queue.");
         return -1;
@@ -12,7 +17,7 @@ int main(int argc, char* argv[])
     ALLEGRO_EVENT event;
     
     ALLEGRO_TIMER *carsTimer = al_create_timer(1.0/FPS); // Timer para actualizar la posición de los autos.
-    if(carsTimer)
+    if(!carsTimer)
     {
         fprintf(stderr, "Error loading carsTimer.");
         al_destroy_event_queue(eventQueue);
@@ -20,7 +25,7 @@ int main(int argc, char* argv[])
     }
     al_register_event_source(eventQueue, al_get_timer_event_source(carsTimer));
     
-    if(al_install_keyboard()) // USO EL TECLADO EN LUGAR DEL JOYSTICK, ESTO DEBE CAMBIARSE.
+    if(!al_install_keyboard()) // USO EL TECLADO EN LUGAR DEL JOYSTICK, ESTO DEBE CAMBIARSE.
     {
         fprintf(stderr, "Error installing keyboard.");
         al_destroy_event_queue(eventQueue);
@@ -36,7 +41,7 @@ int main(int argc, char* argv[])
     // UN JUGADOR ENTRARÍA EN EL TOP10 SI SU PUNTAJE SUPERA AL ÚLTIMO DE LA LISTA ORDENADA, POSTERIORMENTE SE REORDENA CON QSORT Y EL JUGADOR QUEDA EN LA POSICIÓN CORRESPONDIENTE.
     
     gameData_t gameData; // Se crea este objeto que contiene toda la información necesaria para manejar el juego, de modo que las rutinas de acción puedan recibir un puntero a este objeto.
-    gameData_t *pGameData;
+    gameData_t *pGameData = &gameData;
     /************* INICIALIZACIÓN DE GAMEDATA ***************/
     {
         al_init_user_event_source(&gameData.lives); // Creación de un tipo de evento de software para cuando se acaban las vidas.
@@ -282,10 +287,10 @@ int main(int argc, char* argv[])
         saveScore3Char[3].stateID = 9;
     }
 /************************************************************************************/
-    pGameData->currentState = startMenuPlayGame;
+    pGameData->currentState = &startMenuPlayGame[0];
     al_start_timer(carsTimer);
     pthread_t terminalDisplay;
-    pthread_create(&terminalDisplay, NULL, &terminal_display, NULL);
+    pthread_create(&terminalDisplay, NULL, &terminal_display, pGameData);
     
     while(!gameData.quitGame)
     {

@@ -2,7 +2,7 @@
 
 void* terminal_display(void *pArg)
 {
-    gameData_t *pData = pArg;
+    gameData_t *pData = (gameData_t*)pArg;
     int i,j;
     enum stateIDs 
     {
@@ -18,7 +18,7 @@ void* terminal_display(void *pArg)
         SAVE_SCORE_3_CHAR
     };
     
-    while(!pData->quitGame)
+    while(!(pData->quitGame))
     {
         usleep(1000); // El display se actualiza cada 1 milisegundo.
         switch(pData->currentState->stateID)

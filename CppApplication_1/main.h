@@ -1,4 +1,4 @@
-/***************************************************************************//**
+/*****************************************************************************
   @file     +Nombre del archivo (ej: template.h)+
   @brief    +Descripcion del archivo+
   @author   +Nombre del autor (ej: Salvador Allende)+
