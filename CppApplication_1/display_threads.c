@@ -2,7 +2,7 @@
 
 void* terminal_display(void *pArg)
 {
-    gameData_t *pData = (gameData_t*)pArg;
+    gameData_t *pData = pArg;
     int i,j;
     enum stateIDs 
     {
