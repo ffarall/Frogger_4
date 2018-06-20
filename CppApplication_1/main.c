@@ -3,6 +3,7 @@
 int main(int argc, char* argv[]) 
 {
     event_t event;
+    event_t *pEvent = &event;
     
     boolean_t board[BOARD_SIZE][BOARD_SIZE];
     init_board(board);
@@ -13,6 +14,7 @@ int main(int argc, char* argv[])
     
     gameData_t gameData; // Se crea este objeto que contiene toda la información necesaria para manejar el juego, de modo que las rutinas de acción puedan recibir un puntero a este objeto.
     gameData_t *pGameData = &gameData;
+    
     /************* INICIALIZACIÓN DE GAMEDATA ***************/
     {
         gameData.pBoard = &board;
@@ -212,13 +214,20 @@ int main(int argc, char* argv[])
     
     pthread_t terminalDisplay, inputThread, timerThread;
     pthread_create(&terminalDisplay, NULL, &terminal_display, pGameData);
-    pthread_create(&inputThread, NULL, &input_thread, pGameData);
-    pthread_create(&timerThread, NULL, &timer_thread, pGameData);
+    pthread_create(&inputThread, NULL, &input_thread, pEvent);
+    pthread_create(&timerThread, NULL, &timer_thread, pEvent);
     
     while(!gameData.quitGame)
     {
         if(event.flag)
         {
+            event.flag = !event.flag;
+            pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
+        }
+        else if(event.timerFlag)
+        {
+            event.timerFlag = !event.timerFlag;
+            event.type = TIMER_EVENT;
             pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
         }
     }
