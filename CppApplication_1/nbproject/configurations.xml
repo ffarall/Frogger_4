@@ -16,6 +16,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>action_routines.c</itemPath>
+      <itemPath>allegro_threads.c</itemPath>
       <itemPath>display_threads.c</itemPath>
       <itemPath>main.c</itemPath>
     </logicalFolder>
@@ -96,6 +97,8 @@
       </compileType>
       <item path="action_routines.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="allegro_threads.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="display_threads.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="display_threads.h" ex="false" tool="3" flavor2="0">
@@ -128,6 +131,8 @@
         </asmTool>
       </compileType>
       <item path="action_routines.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="allegro_threads.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="display_threads.c" ex="false" tool="0" flavor2="0">
       </item>

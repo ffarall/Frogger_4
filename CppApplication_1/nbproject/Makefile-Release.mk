@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/action_routines.o \
+	${OBJECTDIR}/allegro_threads.o \
 	${OBJECTDIR}/display_threads.o \
 	${OBJECTDIR}/main.o
 
@@ -68,6 +69,11 @@ ${OBJECTDIR}/action_routines.o: action_routines.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/action_routines.o action_routines.c
+
+${OBJECTDIR}/allegro_threads.o: allegro_threads.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/allegro_threads.o allegro_threads.c
 
 ${OBJECTDIR}/display_threads.o: display_threads.c
 	${MKDIR} -p ${OBJECTDIR}
