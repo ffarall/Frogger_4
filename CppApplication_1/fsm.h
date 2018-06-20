@@ -23,12 +23,23 @@
  ******************************************************************************/
 #define BOARD_SIZE 16
 #define LIVES 3
+#define GAME_EVENT 1024
+#define KEYBOARD_EVENT 1025
+#define JOYSTICK_EVENT 1026
 
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 typedef char boolean_t;
+typedef int eventSource_t;
+typedef struct
+{
+    boolean_t flag;
+    int type;
+    eventSource_t source;
+    char keychar;
+}event_t;
 typedef struct
 {
     char player[3];

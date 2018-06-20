@@ -20,7 +20,7 @@ void* terminal_display(void *pArg)
     
     while(!(pData->quitGame))
     {
-        usleep(1000); // El display se actualiza cada 1 milisegundo.
+        usleep(100000); // El display se actualiza cada 1 milisegundo.
         switch(pData->currentState->stateID)
         {
             case START_MENU_PLAY_GAME: 
@@ -50,11 +50,11 @@ void* terminal_display(void *pArg)
                 {
                     for(j = 0; j < BOARD_SIZE; j++)
                     {
-                        if(i == pData->frog.x && j == pData->frog.y)
+                        if(i == pData->frog.y && j == pData->frog.x)
                         {
                             printf("F");
                         }
-                        else if(*(pData->pBoard)[i][j])
+                        else if((*pData->pBoard)[j][i])
                         {
                             printf("*");
                         }
