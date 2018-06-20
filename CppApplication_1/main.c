@@ -23,7 +23,6 @@ int main(int argc, char* argv[])
         al_destroy_event_queue(eventQueue);
         return -1;
     }
-    al_register_event_source(eventQueue, al_get_timer_event_source(carsTimer));
     
     if(!al_install_keyboard()) // USO EL TECLADO EN LUGAR DEL JOYSTICK, ESTO DEBE CAMBIARSE.
     {
@@ -288,16 +287,16 @@ int main(int argc, char* argv[])
     }
 /************************************************************************************/
     pGameData->currentState = &startMenuPlayGame[0];
-    al_start_timer(carsTimer);
     al_register_event_source(eventQueue, al_get_timer_event_source(carsTimer));
     al_register_event_source(eventQueue, al_get_keyboard_event_source());
+    al_start_timer(carsTimer);
     
     pthread_t terminalDisplay;
     pthread_create(&terminalDisplay, NULL, &terminal_display, pGameData);
     
     while(!gameData.quitGame)
     {
-        if(gameData.lives.__pad[0] <= 0) // Si se quedó sin vidas, game over.
+        /*if(gameData.lives.__pad[0] <= 0) // Si se quedó sin vidas, game over.
         {
             event.type = ALLEGRO_EVENT_USER;
             al_emit_user_event(&gameData.lives, &event, NULL); // ES POSIBLE QUE ESTE EVENTO NO ESTE SIENDO ENVIADO A LA COLA, SINO DIRECTAMENTE A LA VARIABLE event, CONTROLAR ESO.
@@ -317,7 +316,7 @@ int main(int argc, char* argv[])
             pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
         }
         
-        else if(al_get_next_event(eventQueue, &event))
+        else */if(al_get_next_event(eventQueue, &event))
         {
             pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
         }
