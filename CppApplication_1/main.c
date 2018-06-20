@@ -217,37 +217,16 @@ int main(int argc, char* argv[])
     
     while(!gameData.quitGame)
     {
-        if(gameData.lives <= 0) // Si se quedó sin vidas, game over.
-        {
-            event.type = ALLEGRO_EVENT_USER;
-            al_emit_user_event(&gameData.lives, &event, NULL); // ES POSIBLE QUE ESTE EVENTO NO ESTE SIENDO ENVIADO A LA COLA, SINO DIRECTAMENTE A LA VARIABLE event, CONTROLAR ESO.
-            pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
-        }
-        else if((*gameData.pBoard)[gameData.frog.y][gameData.frog.x]) // Si en la posición de la rana hay un 1, hay un choque.
-        { 
-            event.type = ALLEGRO_EVENT_USER;    
-            al_emit_user_event(&gameData.frogHit, &event, NULL); // ES POSIBLE QUE ESTE EVENTO NO ESTE SIENDO ENVIADO A LA COLA, SINO DIRECTAMENTE A LA VARIABLE event, CONTROLAR ESO.
-            pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
-        }
-        else if(gameData.frog.y == 0 && (gameData.frog.x == 2 || gameData.frog.x == 6 || gameData.frog.x == 9 || gameData.frog.x == 13)) // Si la rana llegó a alguno de los 4 lugares de llegada, se sube de nivel.
-        {
-            event.type = ALLEGRO_EVENT_USER;
-            gameData.levelUp.__pad[0] = 1; // Se avisa que se va a subir de nivel.
-            al_emit_user_event(&gameData.levelUp, &event, NULL); // ES POSIBLE QUE ESTE EVENTO NO ESTE SIENDO ENVIADO A LA COLA, SINO DIRECTAMENTE A LA VARIABLE event, CONTROLAR ESO.
-            pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
-        }
-        
-        else if(al_get_next_event(eventQueue, &event))
+        if(event.flag)
         {
             pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
         }
     }
     
     printf("YOU EXITED THE GAME\n"); // CAMBIAR ESTO A UN MENSAJE DE SALIDA DEL JUEGO O LO QUE SEA.
-    pthread_join(terminalDisplay, NULL);
-    al_destroy_event_queue(eventQueue);
-    al_destroy_timer(carsTimer);
-    al_uninstall_keyboard();
+    pthread_join(terminalDisplay, NULL); // CAMBIAR ESTO POR OUTPUTTHREAD.
+    pthread_join(inputThread, NULL);
+    pthread_join(timerThread, NULL);
     
     return (EXIT_SUCCESS);
 }
@@ -378,39 +357,16 @@ void init_board(boolean_t board[][BOARD_SIZE])
 
 
 /****************************** FSM_HANDLER FUNCTION *********************************/
-state_t* fsm_handler(state_t *currentState, ALLEGRO_EVENT newEvent, void *pActRoutineData)
+state_t* fsm_handler(state_t *currentState, event_t newEvent, void *pActRoutineData)
 {
-    if(newEvent.type == ALLEGRO_EVENT_KEY_CHAR) // CAMBIAR ESTO AL TIPO DE EVENTO QUE SE USE PARA EL JOYSTICK (RECORDAR QUE SE PODRÍA DEFINIR UN ALLEGRO_EVENT_USER_JOYSTICK PROPIO, PARA DIFERENCIARLO DE LOS USER EVENTS QUE YO HICE)
+    
+    while(currentState->event.type != newEvent.type && currentState->event.type != END_TABLE)
     {
-        while(currentState->event.keyboard.unichar != newEvent.keyboard.unichar && currentState->event.user.data1 != END_TABLE)
-        {
-            currentState++;
-        }
-
-        (*currentState->actionRoutine)(pActRoutineData);
-        currentState = currentState->nextState;
-        return currentState;
+        currentState++;
     }
-    else if(newEvent.type == ALLEGRO_EVENT_USER)
-    {
-        while(currentState->event.user.source != newEvent.user.source && currentState->event.user.data1 != END_TABLE)
-        {
-            currentState++;
-        }
 
-        (*currentState->actionRoutine)(pActRoutineData);
-        currentState = currentState->nextState;
-        return currentState;
-    }
-    else if(newEvent.type == ALLEGRO_EVENT_TIMER)
-    {
-        while(currentState->event.timer.source != newEvent.timer.source && currentState->event.user.data1 != END_TABLE)
-        {
-            currentState++;
-        }
-
-        (*currentState->actionRoutine)(pActRoutineData);
-        currentState = currentState->nextState;
-        return currentState;
-    }
+    (*currentState->actionRoutine)(pActRoutineData);
+    currentState = currentState->nextState;
+    return currentState;
+    
 }

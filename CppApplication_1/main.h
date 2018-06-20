@@ -42,8 +42,6 @@
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-void* input_thread(void *pArg);
-void* timer_thread(void *pArg);
 
 // +ej: extern unsigned int anio_actual;+
 
@@ -52,7 +50,9 @@ void* timer_thread(void *pArg);
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 void init_board(boolean_t board[][BOARD_SIZE]);
-state_t* fsm_handler(state_t *currentState, ALLEGRO_EVENT newEvent, void *pActRoutineData);
+state_t* fsm_handler(state_t *currentState, event_t newEvent, void *pActRoutineData);
+void* input_thread(void *pArg);
+void* timer_thread(void *pArg);
 
 
 /**

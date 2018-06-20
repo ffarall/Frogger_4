@@ -14,9 +14,9 @@ void cars_routine(void *pArg)
     int row = 0;
     srand(time(NULL));
     
-    if(pData->levelUp.__pad[0]) // Si se tiene que subir de nivel, se efectua un cambio en el máximo de los divisores.
+    if(pData->levelUp) // Si se tiene que subir de nivel, se efectua un cambio en el máximo de los divisores.
     {
-        pData->levelUp.__pad[0] = !(pData->levelUp.__pad[0]); // Se evita que se suba de nivel nuevamente.
+        pData->levelUp = !(pData->levelUp); // Se evita que se suba de nivel nuevamente.
         while((dividersMax[row] <= 1)) 
         {
             row = rand()%16; // Se selecciona al azar uno de los carriles a aumetar su velocidad. No se aumenta la volocidad de los que ya van a la velocidad del clock.
@@ -82,7 +82,7 @@ void frog_right(void *pArg)
 void frog_hit(void *pArg)
 {
     gameData_t *pData = pArg;
-    pData->lives.__pad[0]--;
+    pData->lives--;
     pData->frog.x = 8;
     pData->frog.y = 15; // Se reinicia la posición de la rana.
 }
@@ -90,7 +90,7 @@ void frog_hit(void *pArg)
 void start_game(void *pArg)
 {
     gameData_t *pData = pArg;
-    pData->lives.__pad[0] = LIVES;
+    pData->lives = LIVES;
     int letter;
     for(letter = 0; letter < 3; letter++)
     {
