@@ -38,6 +38,7 @@ enum events {
     FROG_HIT_EVENT,
     ENTER_EVENT,
     TIMER_EVENT,
+    PAUSE_EVENT,
 };
 
 typedef char boolean_t;
