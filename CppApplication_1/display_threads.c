@@ -56,11 +56,11 @@ void* terminal_display(void *pArg)
                         }
                         else if(*(pData->pBoard)[i][j])
                         {
-                            printf(" ");
+                            printf("*");
                         }
                         else
                         {
-                            printf("*");
+                            printf(" ");
                         }
                     }
                     printf("\n");
