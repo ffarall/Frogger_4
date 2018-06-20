@@ -4,9 +4,13 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>disdrv.h</itemPath>
       <itemPath>display_threads.h</itemPath>
       <itemPath>fsm.h</itemPath>
+      <itemPath>input_thread.h</itemPath>
+      <itemPath>joydrv.h</itemPath>
       <itemPath>main.h</itemPath>
+      <itemPath>termlib.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -19,6 +23,40 @@
       <itemPath>allegro_threads.c</itemPath>
       <itemPath>display_threads.c</itemPath>
       <itemPath>main.c</itemPath>
+      <itemPath>pi_threads.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -99,15 +137,25 @@
       </item>
       <item path="allegro_threads.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="disdrv.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="display_threads.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="display_threads.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="fsm.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="input_thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="joydrv.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="main.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="pi_threads.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="termlib.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -134,15 +182,25 @@
       </item>
       <item path="allegro_threads.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="disdrv.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="display_threads.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="display_threads.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="fsm.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="input_thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="joydrv.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="main.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="pi_threads.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="termlib.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

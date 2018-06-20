@@ -38,7 +38,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/action_routines.o \
 	${OBJECTDIR}/allegro_threads.o \
 	${OBJECTDIR}/display_threads.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/pi_threads.o
 
 
 # C Compiler Flags
@@ -84,6 +85,11 @@ ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+
+${OBJECTDIR}/pi_threads.o: pi_threads.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/pi_threads.o pi_threads.c
 
 # Subprojects
 .build-subprojects:
