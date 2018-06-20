@@ -23,22 +23,29 @@
  ******************************************************************************/
 #define BOARD_SIZE 16
 #define LIVES 3
-#define GAME_EVENT 1024
-#define KEYBOARD_EVENT 1025
-#define JOYSTICK_EVENT 1026
 
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+enum events {
+    RIGHT_EVENT = 1024,
+    UP_EVENT,
+    DOWN_EVENT,
+    LEFT_EVENT,
+    GAME_OVER_EVENT,
+    LEVEL_UP_EVENT,
+    FROG_HIT_EVENT,
+    ENTER_EVENT,
+    TIMER_EVENT,
+};
+
 typedef char boolean_t;
-typedef int eventSource_t;
 typedef struct
 {
     boolean_t flag;
     int type;
-    eventSource_t source;
-    char keychar;
+    boolean_t timerFlag;
 }event_t;
 typedef struct
 {
@@ -47,7 +54,7 @@ typedef struct
 } scorer_t;
 typedef struct STATE
 {
-    ALLEGRO_EVENT event;
+    event_t event;
     struct STATE *nextState;
     void (*actionRoutine)(void *);
     int stateID;
@@ -55,15 +62,15 @@ typedef struct STATE
 
 typedef struct
 {
-    int8_t x;
-    int8_t y;
+    uint8_t x;
+    uint8_t y;
 }frog_t;
 
 typedef struct
 {
-    ALLEGRO_EVENT_SOURCE lives;
-    ALLEGRO_EVENT_SOURCE levelUp;
-    ALLEGRO_EVENT_SOURCE frogHit;
+    int lives;
+    boolean_t levelUp;
+    boolean_t frogHit;
     boolean_t quitGame;
     boolean_t (*pBoard)[16][16];
     frog_t frog;
