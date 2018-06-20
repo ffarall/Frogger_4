@@ -54,13 +54,13 @@ void* terminal_display(void *pArg)
                         {
                             printf("F");
                         }
-                        else if(pData->pBoard[i][j])
+                        else if(*(pData->pBoard)[i][j])
                         {
-                            printf("*");
+                            printf(" ");
                         }
                         else
                         {
-                            printf(" ");
+                            printf("*");
                         }
                     }
                     printf("\n");

@@ -289,6 +289,9 @@ int main(int argc, char* argv[])
 /************************************************************************************/
     pGameData->currentState = &startMenuPlayGame[0];
     al_start_timer(carsTimer);
+    al_register_event_source(eventQueue, al_get_timer_event_source(carsTimer));
+    al_register_event_source(eventQueue, al_get_keyboard_event_source());
+    
     pthread_t terminalDisplay;
     pthread_create(&terminalDisplay, NULL, &terminal_display, pGameData);
     
@@ -298,20 +301,23 @@ int main(int argc, char* argv[])
         {
             event.type = ALLEGRO_EVENT_USER;
             al_emit_user_event(&gameData.lives, &event, NULL); // ES POSIBLE QUE ESTE EVENTO NO ESTE SIENDO ENVIADO A LA COLA, SINO DIRECTAMENTE A LA VARIABLE event, CONTROLAR ESO.
+            pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
         }
         else if(gameData.pBoard[gameData.frog.y][gameData.frog.x]) // Si en la posición de la rana hay un 1, hay un choque.
         { 
             event.type = ALLEGRO_EVENT_USER;    
             al_emit_user_event(&gameData.frogHit, &event, NULL); // ES POSIBLE QUE ESTE EVENTO NO ESTE SIENDO ENVIADO A LA COLA, SINO DIRECTAMENTE A LA VARIABLE event, CONTROLAR ESO.
+            pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
         }
         else if(gameData.frog.y == 0 && (gameData.frog.x == 2 || gameData.frog.x == 6 || gameData.frog.x == 9 || gameData.frog.x == 13)) // Si la rana llegó a alguno de los 4 lugares de llegada, se sube de nivel.
         {
             event.type = ALLEGRO_EVENT_USER;
             gameData.levelUp.__pad[0] = 1; // Se avisa que se va a subir de nivel.
             al_emit_user_event(&gameData.levelUp, &event, NULL); // ES POSIBLE QUE ESTE EVENTO NO ESTE SIENDO ENVIADO A LA COLA, SINO DIRECTAMENTE A LA VARIABLE event, CONTROLAR ESO.
+            pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
         }
         
-        if(al_get_next_event(eventQueue, &event))
+        else if(al_get_next_event(eventQueue, &event))
         {
             pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
         }
@@ -319,6 +325,9 @@ int main(int argc, char* argv[])
     
     printf("YOU EXITED THE GAME\n"); // CAMBIAR ESTO A UN MENSAJE DE SALIDA DEL JUEGO O LO QUE SEA.
     pthread_join(terminalDisplay, NULL);
+    al_destroy_event_queue(eventQueue);
+    al_destroy_timer(carsTimer);
+    al_uninstall_keyboard();
     
     return (EXIT_SUCCESS);
 }
