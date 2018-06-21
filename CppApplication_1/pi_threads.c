@@ -1,4 +1,4 @@
-#include "input_thread.h"
+/*#include "input_thread.h"
 
 
 void* input_thread (void* event)//genera eventos de movimiento del joystick
@@ -61,4 +61,4 @@ void* input_thread (void* event)//genera eventos de movimiento del joystick
         }
     }
   }
-}
+}*/

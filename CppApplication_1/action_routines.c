@@ -30,12 +30,12 @@ void cars_routine(void *pArg)
     {
         for(row = 0; row < BOARD_SIZE; row++)
         {
-            if(!dividersMax[row]) // Si no se está en una fila con divider maximo 0...
+            if(dividersMax[row]) // Si no se está en una fila con divider maximo 0...
             {
                 dividers[row]--;
                 if(!dividers[row]) // Si se cumplió el ciclo, se mueven los autos.
                 {
-                    shift_handler(*(pData->pBoard)[row], ways[row]);
+                    shift_handler((*pData->pBoard), ways[row], row);
                     dividers[row] = dividersMax[row]; // Se resetea el ciclo con el maximo de cada divider.
                 }
             }
@@ -144,38 +144,38 @@ void game_over(void *pArg)
 
 
 /******************************************* FUNCIONES AUXILIARES **************************************************/
-void shift_handler(boolean_t row[BOARD_SIZE], boolean_t way)
+void shift_handler(boolean_t row[BOARD_SIZE][BOARD_SIZE], boolean_t way, int row_num)
 {
     if(way) // Si way es 1, se gira a la derecha.
     {
-        shift_right_row(row);
+        shift_right_row(row, row_num);
     }
     else // Se gira a izquierda.
     {
-        shift_left_row(row);
+        shift_left_row(row, row_num);
     }
 }
 
-void shift_right_row(boolean_t row[BOARD_SIZE])
+void shift_right_row(boolean_t row[BOARD_SIZE][BOARD_SIZE], int row_num)
 {
-    boolean_t aux1 = row[BOARD_SIZE-1], aux2;
+    boolean_t aux1 = row[BOARD_SIZE-1][row_num], aux2;
     int i;
     for(i = 0; i < BOARD_SIZE; i++)
     {
-        aux2 = row[i];
-        row[i] = aux1;
+        aux2 = row[i][row_num];
+        row[i][row_num] = aux1;
         aux1 = aux2;
     }
 }
 
-void shift_left_row(boolean_t row[BOARD_SIZE])
+void shift_left_row(boolean_t row[BOARD_SIZE][BOARD_SIZE], int row_num)
 {
-    boolean_t aux1 = row[0], aux2;
+    boolean_t aux1 = row[0][row_num], aux2;
     int i;
     for(i = 0; i < BOARD_SIZE; i++)
     {
-        aux2 = row[15-i];
-        row[15-i] = aux1;
+        aux2 = row[15-i][row_num];
+        row[15-i][row_num] = aux1;
         aux1 = aux2;
     }
 }
@@ -185,7 +185,7 @@ void letter_up(void *pArg, int letter)
     gameData_t *pData = pArg;
     if(pData->player[letter] > 'A')
     {
-        pData->player[letter]++;
+        pData->player[letter]--;
     }
 }
 
@@ -194,6 +194,6 @@ void letter_down(void *pArg, int letter)
     gameData_t *pData = pArg;
     if(pData->player[letter] < 'Z')
     {
-        pData->player[letter]--;
+        pData->player[letter]++;
     }
 }

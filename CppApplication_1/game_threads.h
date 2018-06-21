@@ -11,6 +11,7 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 #include "fsm.h"
+#include "termlib.h"
 #include <stdio.h>
 #include <pthread.h>
 #include <unistd.h>
@@ -21,7 +22,11 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 #define clear_disp() printf("\033[H\033[J")
-
+#define KEYDOWN_ASCII 115
+#define KEYUP_ASCII 119
+#define KEYLEFT_ASCII 97
+#define KEYRIGHT_ASCII 100
+#define ENTER_ASCII 10
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -32,7 +37,7 @@
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-
+extern pthread_mutex_t eventMutex;
 // +ej: extern unsigned int anio_actual;+
 
 
@@ -40,6 +45,7 @@
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 void* terminal_display(void *pArg);
+void* game_thread(void *pArg);
 
 /**
  * @brief TODO: completar descripcion

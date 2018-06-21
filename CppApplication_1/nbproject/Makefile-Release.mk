@@ -37,9 +37,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/action_routines.o \
 	${OBJECTDIR}/allegro_threads.o \
-	${OBJECTDIR}/display_threads.o \
+	${OBJECTDIR}/game_threads.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/pi_threads.o \
+	${OBJECTDIR}/termlib.o \
 	${OBJECTDIR}/timer_thread.o
 
 
@@ -77,10 +78,10 @@ ${OBJECTDIR}/allegro_threads.o: allegro_threads.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/allegro_threads.o allegro_threads.c
 
-${OBJECTDIR}/display_threads.o: display_threads.c
+${OBJECTDIR}/game_threads.o: game_threads.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/display_threads.o display_threads.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/game_threads.o game_threads.c
 
 ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}
@@ -91,6 +92,11 @@ ${OBJECTDIR}/pi_threads.o: pi_threads.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/pi_threads.o pi_threads.c
+
+${OBJECTDIR}/termlib.o: termlib.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/termlib.o termlib.c
 
 ${OBJECTDIR}/timer_thread.o: timer_thread.c
 	${MKDIR} -p ${OBJECTDIR}

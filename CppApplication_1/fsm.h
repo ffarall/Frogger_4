@@ -23,6 +23,7 @@
  ******************************************************************************/
 #define BOARD_SIZE 16
 #define LIVES 3
+#define END_TABLE 0
 
 
 /*******************************************************************************
@@ -79,6 +80,7 @@ typedef struct
     uint score;
     scorer_t (*pTop10)[10];
     state_t *currentState;
+    event_t event;
 }gameData_t;
 
 
@@ -94,9 +96,9 @@ typedef struct
  ******************************************************************************/
 void non_act_routine(void *pArg);
 void cars_routine(void *pArg);
-void shift_right_row(boolean_t row[16]);
-void shift_left_row(boolean_t row[16]);
-void shift_handler(boolean_t row[BOARD_SIZE], boolean_t way);
+void shift_right_row(boolean_t row[BOARD_SIZE][BOARD_SIZE], int row_num);
+void shift_left_row(boolean_t row[BOARD_SIZE][BOARD_SIZE], int row_num);
+void shift_handler(boolean_t row[BOARD_SIZE][BOARD_SIZE], boolean_t way, int row_num);
 void frog_up(void *pArg);
 void frog_down(void *pArg);
 void frog_left(void *pArg);

@@ -1,10 +1,8 @@
 #include "main.h"
+pthread_mutex_t eventMutex;
 
 int main(int argc, char* argv[]) 
 {
-    event_t event;
-    event_t *pEvent = &event;
-    
     boolean_t board[BOARD_SIZE][BOARD_SIZE];
     init_board(board);
     scorer_t top10[10]; // Arreglo de top 10 de puntajes. 
@@ -212,30 +210,38 @@ int main(int argc, char* argv[])
 /************************************************************************************/
     pGameData->currentState = &startMenuPlayGame[0];
     
-    pthread_t terminalDisplay, inputThread, timerThread;
-    pthread_create(&terminalDisplay, NULL, &terminal_display, pGameData);
-    pthread_create(&inputThread, NULL, &input_thread, pEvent);
-    pthread_create(&timerThread, NULL, &timer_thread, pEvent);
+    pthread_t terminalDisplay, inputThread, timerThread, gameThread;
+    //pthread_create(&terminalDisplay, NULL, &terminal_display, pGameData);
+    pthread_create(&inputThread, NULL, &input_thread, pGameData);
+    pthread_create(&timerThread, NULL, &timer_thread, pGameData);
+    pthread_create(&gameThread, NULL, &game_thread, pGameData);
+    
+    pthread_mutex_init(&eventMutex,NULL);
     
     while(!gameData.quitGame)
     {
-        if(event.flag)
+        if(gameData.event.flag)
         {
-            event.flag = !event.flag;
-            pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
+            gameData.event.flag = !gameData.event.flag;
+            pGameData->currentState = fsm_handler(pGameData->currentState, gameData.event, pGameData);
         }
-        else if(event.timerFlag)
+        else if(gameData.event.timerFlag)
         {
-            event.timerFlag = !event.timerFlag;
-            event.type = TIMER_EVENT;
-            pGameData->currentState = fsm_handler(pGameData->currentState, event, pGameData);
+            gameData.event.timerFlag = !gameData.event.timerFlag;
+            gameData.event.type = TIMER_EVENT;
+            pGameData->currentState = fsm_handler(pGameData->currentState, gameData.event, pGameData);
+            terminal_display(pGameData);
         }
     }
     
     printf("YOU EXITED THE GAME\n"); // CAMBIAR ESTO A UN MENSAJE DE SALIDA DEL JUEGO O LO QUE SEA.
-    pthread_join(terminalDisplay, NULL); // CAMBIAR ESTO POR OUTPUTTHREAD.
+    
+    //pthread_join(terminalDisplay, NULL); // CAMBIAR ESTO POR OUTPUTTHREAD.
     pthread_join(inputThread, NULL);
     pthread_join(timerThread, NULL);
+    pthread_join(gameThread, NULL);
+    
+    pthread_mutex_destroy(&eventMutex);
     
     return (EXIT_SUCCESS);
 }

@@ -1,7 +1,7 @@
-void allegrokb(void* event_str)
+/*void allegrokb(void* event_str)
 {
   /***********INICIALIZACIÓN DE ELEMENTOS DE ALLEGRO*****/
-  ALLEGRO_EVENT_QUEUE *ev_queue = NULL;
+/*  ALLEGRO_EVENT_QUEUE *ev_queue = NULL;
 
   if(!al_install_keyboard())
   {
@@ -20,7 +20,7 @@ void allegrokb(void* event_str)
   al_register_event_source(ev_queue,al_get_keyboard_event_source());
 
   /**************ESPERA DE EVENTOS******************/
-
+/*
   while(1)
   {
     ALLEGRO_EVENT event;  // creo estructura de eventos
@@ -57,9 +57,9 @@ void allegrokb(void* event_str)
 
       /* para que se utilice el mismo thread para el input de datos (como caracteres), se deben agregar cases con las respectivas teclas */
 
-        }
+/*        }
 /*usar mutex para bloquear el acceso a la estructura !!!!!!!!! */
-
+/*
         ((event_t*)(event_str))->flag == 1;             // set del flag de EVENTOS
         ((event_t*)(event_str))->type == key_pressed;   // descripción del tipo de evento
 
@@ -67,4 +67,4 @@ void allegrokb(void* event_str)
     }
   }
 
-}
+}*/

@@ -18,7 +18,7 @@
 #include <unistd.h>
 
 #define infinite_loop while(1)
-#define TIME_MS     50
+#define TIME_MS     100
 
 #endif /* TIMER_THREAD_H */
 
