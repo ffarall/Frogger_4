@@ -39,7 +39,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/allegro_threads.o \
 	${OBJECTDIR}/display_threads.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/pi_threads.o
+	${OBJECTDIR}/pi_threads.o \
+	${OBJECTDIR}/timer_thread.o
 
 
 # C Compiler Flags
@@ -90,6 +91,11 @@ ${OBJECTDIR}/pi_threads.o: pi_threads.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/pi_threads.o pi_threads.c
+
+${OBJECTDIR}/timer_thread.o: timer_thread.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/timer_thread.o timer_thread.c
 
 # Subprojects
 .build-subprojects:

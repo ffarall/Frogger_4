@@ -26,7 +26,7 @@
 #define JOY_THRESHOLD 70     // 10-100 Joystick threshold (sensitivity)
 
 
-
+void* input_thread (void* event);
 
 #endif /* INPUT_THREAD_H */
 
