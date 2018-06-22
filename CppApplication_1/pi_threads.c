@@ -148,7 +148,7 @@ Nota: debe estar inicializado el display con las herramientas de <disdrv.h> */
 
 /*frogTimeThread
 Timer para el parpadeo de la rana */
-void* frogTimeThread (void* p2timer)
+/*void* frogTimeThread (void* p2timer)
 {
   infinite_loop
   {
