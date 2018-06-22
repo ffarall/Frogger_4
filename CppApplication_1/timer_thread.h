@@ -16,6 +16,7 @@
 
 #include "fsm.h"
 #include <unistd.h>
+#include <stdbool.h>
 
 #define infinite_loop while(1)
 #define TIME_MS     100

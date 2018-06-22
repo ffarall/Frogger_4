@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <pthread.h>
-#include <allegro5/events.h>
+//#include <allegro5/events.h>
 
 
 /*******************************************************************************
