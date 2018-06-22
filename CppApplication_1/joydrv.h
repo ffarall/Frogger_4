@@ -1,5 +1,6 @@
 #ifndef joydrv_h
 #define joydrv_h
+#include<stdint.h>
 
 
 
